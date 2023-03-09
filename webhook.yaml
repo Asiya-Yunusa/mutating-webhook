@@ -1,0 +1,33 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: mutating-webhook
+  annotations:
+    cert-manager.io/inject-ca-from: /client
+  namespace: mutation
+webhooks:
+  - name: warden.mutation.svc
+    failurePolicy: Fail
+    sideEffects: None
+    admissionReviewVersions: ["v1","v1beta1"]
+    rules:
+      - apiGroups: ["apps", ""]
+        resources:
+          - "deployments"
+        apiVersions:
+          - "*"
+        operations:
+          - CREATE
+          - UPDATE
+    namespaceSelector:
+      matchExpressions:
+        - key: appdynamics-webhook
+          operator: In
+          values: ["enabled"]
+    clientConfig:
+      service:
+        name: warden
+        namespace: mutation
+        path: /mutate/
+      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM4RENDQWRpZ0F3SUJBZ0lRVHlkVVlPd2Z6Nm1JSzZRYlVWc1hQekFOQmdrcWhraUc5dzBCQVFzRkFEQVMKTVJBd0RnWURWUVFERXdkallTMXliMjkwTUI0WERUSXlNVEV5TnpFeE16QXlOVm9YRFRJek1ESXlOVEV4TXpBeQpOVm93RWpFUU1BNEdBMVVFQXhNSFkyRXRjbTl2ZERDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDCkFRb0NnZ0VCQU54M0dTRnVvdzJ1bHZGOFU2YlZScStPN1l4aytUbFVMU05jWlBzYUVlVUxiM21Ia2djeWZIRmUKeEN0MHdRYm9hK2xLRkU1eURRZ1M1TXNMUHloREdqRVB2cFJmNHcxZVpVS05lYVprNVNZelRIa0phY05BYUJMWQp4bjUwcVA1MUxnRFdCWXlhMmlXN3hiV3JMVWY3bDBpbERTUjRwZzlpNXJUTGNDbG9tNXQ3RW9MSmU4OW14ejEwCjFqUldKcWx5ZkhNeTRSd0o2NEtiMWVOVzB0UnNuUEE5Tk1nbHhobEh1WWtGOG5FT3RKWVRhcDFSR1h1Z1hUaGIKYWZTQkI2YlFNbm41TkxuK2tYUnliNkZvTCtkaXM1N1RIbjlOM2RjSkNBSVNvc3phZzRYaEp6OGJqb1k2RDVwRwpNM2xENFZHajc1YnkvOHhGWVhqU1E3ZVFxK1p1bDVjQ0F3RUFBYU5DTUVBd0RnWURWUjBQQVFIL0JBUURBZ0trCk1BOEdBMVVkRXdFQi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZHSXFSZnFpV2FzQ0phTUJMVmR3OXlxOWREWk8KTUEwR0NTcUdTSWIzRFFFQkN3VUFBNElCQVFCMi82QkRtS1FrbGdjRTN2VDVIM0dYZFJNeE9lOFJ0TVM5bW1EZQpGRzM3T04wZStoN2FqUU8relM0aWUrNWtwZEIrQzlPMVhmOFI5MEdsMm85VGk5QTBiaVNHOVhkaTkyWnB4eWNVCldISFA3RVRRdmlkUDh2bjkrV2FkWUs5cDJ1WW9OVzA0cGFKejkxTjgva0RrY3d2WlBhL2ZDQ3E5RUtQS3NWUkYKdWUyY0JKcWgzSWpYdTZHeWVrVTM4bUJSOWd2THJZVTRXdjFqd1RNcVFYQ2RrRDRGVjdnOG5NbmdxUUNHamNsbwoza3VTR2J3Zm14YzVCZDBLRTVMU0g1SG9heVRDWnY4R0phT0pXd25iUHpXOTFYQlBLUURBY0Vmb1MwQmNqTVFoCmkxVFZnQnhLRE0xL0llWC9qNm4rcEZlaVNXcEtHeVZwUXM3VEsvSzRaQU1vbVFiQQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+

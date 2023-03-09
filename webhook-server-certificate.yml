@@ -1,0 +1,21 @@
+kind: Certificate
+apiVersion: cert-manager.io/v1
+metadata:
+  name: server
+  namespace: mutation
+spec:
+  issuerRef:
+    name: ca-root
+    kind: ClusterIssuer
+  secretName: server-cert
+  duration: 8760h
+  renewBefore: 24h
+  dnsNames:
+    - warden.mutation.svc
+  isCA: false
+  privateKey:
+    algorithm: RSA
+    size: 2048
+  usages:
+    - client auth
+    - server auth

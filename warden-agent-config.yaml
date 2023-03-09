@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: warden-agent-config
+  namespace: mutation
+data:
+  java_agent: repo.isw.la/appd-java-agent:20.11.0.31438
+  dotnet_agent: repo.isw.la/appdynamics-dotnet:20.8.0

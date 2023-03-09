@@ -1,0 +1,5 @@
+flask
+jsonify
+Werkzeug
+jsonpatch
+gunicorn

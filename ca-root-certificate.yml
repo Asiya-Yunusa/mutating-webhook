@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ca-root
+  namespace: cert-manager
+spec:
+  commonName: ca-root
+  isCA: true
+  issuerRef:
+    kind: ClusterIssuer
+    name: ca-bootstrap
+  privateKey:
+    algorithm: RSA
+    size: 2048
+  secretName: ca-root
+  duration: 8760h0m0s
+  renewBefore: 24h
