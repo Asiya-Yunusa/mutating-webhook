@@ -62,9 +62,9 @@ def deployment_webhook():
         logging.info('metadata has annotations')
         annotations = metadata["annotations"]
 
-        if "monitoring.isw.la/install-appdynamics-agent"  and "monitoring.isw.la/programming-language" in annotations:
-              installAppdagent = annotations.get("monitoring.isw.la/install-appdynamics-agent")
-              programmingLanguage = annotations.get("monitoring.isw.la/programming-language")
+        if "monitoring/install-appdynamics-agent"  and "monitoring/programming-language" in annotations:
+              installAppdagent = annotations.get("monitoring/install-appdynamics-agent")
+              programmingLanguage = annotations.get("monitoring/programming-language")
         else:  
             message = "{} cannot be onboarded to appdynamics because the programming language annotation is not added. Please add the programming language annotation if you set installAppdagent annotation to true".format(applicationName)
             logging.info(message)
@@ -80,9 +80,9 @@ def deployment_webhook():
             return jsonify({"apiVersion": "admission.k8s.io/v1", "kind": "AdmissionReview", "response": {"allowed": True, "uid": uid, "status": {"message": message}, "patchType": "JSONPatch", "patch": base64_patch}})
 
         if programmingLanguage == "dotnet" :
-              dllFilename = annotations.get("monitoring.isw.la/dll-filename")
+              dllFilename = annotations.get("monitoring/dll-filename")
 
-    if  programmingLanguage == "dotnet" and "monitoring.isw.la/dll-filename" not in annotations:
+    if  programmingLanguage == "dotnet" and "monitoring/dll-filename" not in annotations:
 
         message = "{} cannot be onboarded to appdynamics because the dll-filename annotation is not added for the dotnet application to be started. Please add the dll-filename annotation annotation if you set programming language annotation to dotnet".format(applicationName)
         logging.info(message)
@@ -98,8 +98,8 @@ def deployment_webhook():
         return jsonify({"apiVersion": "admission.k8s.io/v1", "kind": "AdmissionReview", "response": {"allowed": True, "uid": uid, "status": {"message": message}, "patchType": "JSONPatch", "patch": base64_patch}})
 
 
-    if "monitoring.isw.la/springboot-application" in annotations:
-            springBoot = annotations.get("monitoring.isw.la/springboot-application")
+    if "monitoring/springboot-application" in annotations:
+            springBoot = annotations.get("monitoring/springboot-application")
 
     if springBoot == "true" and programmingLanguage == "dotnet":
         message = "{} cannot be onboarded to appdynamics because the programming language annotation and springboot option do not match. Please add the correct  annotations according to the documented process".format(applicationName)
